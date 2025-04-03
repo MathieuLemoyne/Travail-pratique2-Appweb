@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import TitleScreen from "../components/TitleScreen.vue";
+import TheWelcome from "../components/TheWelcome.vue";
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <TitleScreen />
+    <!--- <TheWelcome /> -->
   </main>
 </template>
