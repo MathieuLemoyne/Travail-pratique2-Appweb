@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import CharacterStatus from "@/components/CharacterStatus.vue"
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <CharacterStatus
+      name="Noa"
+      experience="Maître"
+      :credits="0"
+      shipName="riendutout"
+      :health="100"
+    />
   </main>
 </template>
