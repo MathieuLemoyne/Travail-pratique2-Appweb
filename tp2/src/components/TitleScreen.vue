@@ -6,9 +6,9 @@ export default defineComponent({
   setup() {
     const startGame = () => alert("Game Started!");
     const showCredits = () => alert("Credits Page");
-    const exitGame = () => alert("Exiting...");
+    const highScore = () => alert("Exiting...");
 
-    return { startGame, showCredits, exitGame };
+    return { startGame, showCredits, highScore };
   },
 });
 </script>
@@ -29,7 +29,7 @@ export default defineComponent({
       <button class="btn btn-secondary mb-3" @click="showCredits">
         CREDITS
       </button>
-      <button class="btn btn-danger mb-3" @click="exitGame">EXIT</button>
+      <button class="btn btn-danger mb-3" @click="highScore">High-Score</button>
     </div>
   </div>
 </template>
