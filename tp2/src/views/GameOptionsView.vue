@@ -2,6 +2,8 @@
 import CharacterStatus from "@/components/CharacterStatus.vue"
 import { ref, onMounted } from "vue"
 import { Character, Weapon } from "@/scripts/types"
+import data from "../../backend/db.default.json"
+
 /*
 Choisir name de perso dans une liste déroulante à partir du json de backend(folder)
 
@@ -15,10 +17,7 @@ const weapons = ref<Weapon[]>([])
 const selectedCharacter = ref<string>("")
 const selectedWeapon = ref<string>("")
 
-onMounted(async () => {
-  const response = await fetch("/data.json")
-  const data = await response.json()
-
+onMounted(() => {
   characters.value = data.characters
   weapons.value = data.weapons
 })
