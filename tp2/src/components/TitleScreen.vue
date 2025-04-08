@@ -1,16 +1,19 @@
 <script>
-import "bootstrap/dist/css/bootstrap.min.css";
-import { defineComponent } from "vue";
+import "bootstrap/dist/css/bootstrap.min.css"
+import { defineComponent } from "vue"
+import { useRouter } from "vue-router"
 
 export default defineComponent({
   setup() {
-    const startGame = () => alert("Game Started!");
-    const showCredits = () => alert("Credits Page");
-    const exitGame = () => alert("Exiting...");
+    const router = useRouter()
 
-    return { startGame, showCredits, exitGame };
+    const startGame = () => router.push({ name: "GameOptions" })
+    const showCredits = () => alert("Credits Page")
+    const exitGame = () => alert("Exiting...")
+
+    return { startGame, showCredits, exitGame }
   },
-});
+})
 </script>
 
 <template>
