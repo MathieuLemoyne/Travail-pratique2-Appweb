@@ -20,8 +20,20 @@ export default defineComponent({
 
     const startGame = () => {
       if (enteredCharacterName.value && selectedWeapon.value) {
+<<<<<<< HEAD
         // Tu pourrais stocker les infos ici dans un store ou localStorage si besoin
         router.push({ name: "Game" });
+=======
+        const player = {
+          name: enteredCharacterName.value,
+          weapon: selectedWeapon.value,
+          health: 100,
+          experience: "Débutant",
+          credits: 0,
+        }
+
+        router.push({ name: "Game", state: { player } })
+>>>>>>> f100764aa0095ef0f7bc2bf15968a20abf3c5e74
       } else {
         alert("Entre un nom et choisis une arme pour commencer !");
       }
