@@ -20,20 +20,24 @@ export default defineComponent({
 
     const startGame = () => {
       if (enteredCharacterName.value && selectedWeapon.value) {
-<<<<<<< HEAD
-        // Tu pourrais stocker les infos ici dans un store ou localStorage si besoin
-        router.push({ name: "Game" });
-=======
+        const weaponObj = weapons.value.find(
+          (w) => w.name === selectedWeapon.value
+        );
+
+        if (!weaponObj) {
+          alert("Arme non valide !");
+          return;
+        }
+
         const player = {
           name: enteredCharacterName.value,
-          weapon: selectedWeapon.value,
+          weapon: weaponObj,
           health: 100,
           experience: "Débutant",
           credits: 0,
-        }
+        };
 
-        router.push({ name: "Game", state: { player } })
->>>>>>> f100764aa0095ef0f7bc2bf15968a20abf3c5e74
+        router.push({ name: "Game", state: { player } });
       } else {
         alert("Entre un nom et choisis une arme pour commencer !");
       }

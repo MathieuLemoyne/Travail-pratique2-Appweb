@@ -14,7 +14,6 @@ const player = ref<Player | null>(null);
 
 import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
 onMounted(() => {
-  // joueur
   const route = useRoute();
   player.value = route.state?.player || null;
 
@@ -32,16 +31,9 @@ onMounted(() => {
     shipName: enemy.weapon.name,
     health: enemy.vitality,
   };
-  player.value = {
-    name: player.value.name,
-    experience: player.value.experience,
-    credits: player.value.credits,
-    shipName: player.value.weapon.name,
-    health: player.value.health,
-  };
 });
 
-function attackEnemy(player, randomEnemy) {
+function attackEnemy() {
   if (!randomEnemy.value) return;
   const result = combatRound(player.value, randomEnemy.value);
   player.value.health = result.playerHealth;
@@ -91,7 +83,7 @@ const revealEnemyStats = () => {
       <div class="col-6">
         <div class="card">
           <div class="card-body">
-            Stats du joueur <CharacterStatus></CharacterStatus>
+            <CharacterStatus />
           </div>
         </div>
       </div>
