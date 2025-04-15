@@ -8,7 +8,7 @@ import CharacterStatus from "@/components/CharacterStatus.vue";
 
 const showCharacterStats = ref(false);
 const randomEnemy = ref();
-
+import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
 onMounted(() => {
   const enemies = data.characters;
   const randomIndex = Math.floor(Math.random() * enemies.length);
@@ -24,7 +24,12 @@ onMounted(() => {
     health: enemy.vitality,
   };
 });
-
+function attackEnemy(player, randomEnemy) {
+  if (!randomEnemy.value) return;
+  const result = combatRound(player.value, randomEnemy.value);
+  player.value.health = result.playerHealth;
+  randomEnemy.value.health = result.enemyHealth;
+}
 const revealEnemyStats = () => {
   showCharacterStats.value = !showCharacterStats.value;
 };
@@ -38,7 +43,9 @@ const revealEnemyStats = () => {
           <div class="card-body">
             <MissionStatus />
             <div>
-              <button class="btn btn-primary me-2">Attaquer</button>
+              <button class="btn btn-primary me-2" @click="attackEnemy">
+                Attaquer
+              </button>
               <button class="btn btn-secondary">Fuir</button>
             </div>
           </div>
@@ -65,7 +72,9 @@ const revealEnemyStats = () => {
       </div>
       <div class="col-6">
         <div class="card">
-          <div class="card-body">Stats du joueur</div>
+          <div class="card-body">
+            Stats du joueur <CharacterStatus></CharacterStatus>
+          </div>
         </div>
       </div>
     </div>

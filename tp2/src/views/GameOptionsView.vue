@@ -1,40 +1,40 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue"
-import { useRouter } from "vue-router"
-import type { Weapon } from "@/scripts/types"
-import data from "../../backend/db.default.json"
-import "bootstrap/dist/css/bootstrap.min.css"
+import { defineComponent, ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import type { Weapon } from "@/scripts/types";
+import data from "../../backend/db.default.json";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default defineComponent({
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
-    const enteredCharacterName = ref<string>("")
-    const selectedWeapon = ref<string>("")
+    const enteredCharacterName = ref<string>("");
+    const selectedWeapon = ref<string>("");
 
-    const weapons = ref<Weapon[]>([])
+    const weapons = ref<Weapon[]>([]);
 
     onMounted(() => {
-      weapons.value = data.weapons
-    })
+      weapons.value = data.weapons;
+    });
 
     const startGame = () => {
       if (enteredCharacterName.value && selectedWeapon.value) {
         // Tu pourrais stocker les infos ici dans un store ou localStorage si besoin
-        router.push({ name: "Game" })
+        router.push({ name: "Game" });
       } else {
-        alert("Entre un nom et choisis une arme pour commencer !")
+        alert("Entre un nom et choisis une arme pour commencer !");
       }
-    }
+    };
 
     return {
       enteredCharacterName,
       selectedWeapon,
       weapons,
       startGame,
-    }
+    };
   },
-})
+});
 </script>
 
 <template>
