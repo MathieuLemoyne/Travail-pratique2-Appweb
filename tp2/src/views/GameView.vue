@@ -4,6 +4,7 @@ import EnemyStats from "@/components/EnemyStats.vue";
 import { ref, onMounted } from "vue";
 import data from "@/../backend/db.default.json";
 import bootstrap from "bootstrap";
+import CharacterStatus from "@/components/CharacterStatus.vue";
 
 const showCharacterStats = ref(false);
 const randomEnemy = ref();
