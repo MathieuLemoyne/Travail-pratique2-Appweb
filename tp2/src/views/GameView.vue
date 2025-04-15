@@ -5,11 +5,20 @@ import { ref, onMounted } from "vue";
 import data from "@/../backend/db.default.json";
 import bootstrap from "bootstrap";
 import CharacterStatus from "@/components/CharacterStatus.vue";
+import type { Player } from "@/scripts/types";
+import { useRoute } from "vue-router";
 
 const showCharacterStats = ref(false);
 const randomEnemy = ref();
+const player = ref<Player | null>(null);
+
 import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
 onMounted(() => {
+  // joueur
+  const route = useRoute();
+  player.value = route.state?.player || null;
+
+  // random enemy
   const enemies = data.characters;
   const randomIndex = Math.floor(Math.random() * enemies.length);
   const enemy = enemies[randomIndex];
@@ -23,13 +32,22 @@ onMounted(() => {
     shipName: enemy.weapon.name,
     health: enemy.vitality,
   };
+  player.value = {
+    name: player.value.name,
+    experience: player.value.experience,
+    credits: player.value.credits,
+    shipName: player.value.weapon.name,
+    health: player.value.health,
+  };
 });
+
 function attackEnemy(player, randomEnemy) {
   if (!randomEnemy.value) return;
   const result = combatRound(player.value, randomEnemy.value);
   player.value.health = result.playerHealth;
   randomEnemy.value.health = result.enemyHealth;
 }
+
 const revealEnemyStats = () => {
   showCharacterStats.value = !showCharacterStats.value;
 };
