@@ -1,42 +1,44 @@
 <script setup lang="ts">
-import EnemyStats from "@/components/EnemyStats.vue";
-import { ref, onMounted } from "vue";
-import data from "@/../backend/db.default.json";
-import "bootstrap/dist/css/bootstrap.min.css";
-import CharacterStatus from "@/components/CharacterStatus.vue";
-import { useRoute } from "vue-router";
-import type { Character } from "@/scripts/types";
-const showCharacterStats = ref(false);
-const randomEnemy = ref<Character | null>(null);
-const player = ref<Character | null>(null);
+import EnemyStats from "@/components/EnemyStats.vue"
+import { ref, onMounted } from "vue"
+import data from "@/../backend/db.default.json"
+import "bootstrap/dist/css/bootstrap.min.css"
+import CharacterStatus from "@/components/CharacterStatus.vue"
+import { useRoute } from "vue-router"
+import type { Character } from "@/scripts/types"
+const showCharacterStats = ref(false)
+const randomEnemy = ref<Character | null>(null)
+const player = ref<Character | null>(null)
 
-const missionCourante = ref(1);
-const totalMissions = 5;
-const credits = ref(100);
+const missionCourante = ref(1)
+const totalMissions = 5
+const credits = ref(100)
 
-import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
-import GameStats from "@/components/GameStats.vue";
+const HEALING_AMOUNT = 5
+
+import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
+import GameStats from "@/components/GameStats.vue"
 onMounted(() => {
-  const route = useRoute();
-  const playerName = route.query.name as string;
-  const weaponName = route.query.weapon as string;
+  const route = useRoute()
+  const playerName = route.query.name as string
+  const weaponName = route.query.weapon as string
 
-  const weaponObj = data.weapons.find((w) => w.name === weaponName);
+  const weaponObj = data.weapons.find((w) => w.name === weaponName)
 
   if (!weaponObj) {
-    console.error("Arme non trouvée :", weaponName);
-    return;
+    console.error("Arme non trouvée :", weaponName)
+    return
   }
   if (!playerName || !weaponName) {
-    console.error("Nom ou arme manquante.");
-    return;
+    console.error("Nom ou arme manquante.")
+    return
   }
   //faire erreur quand impossible d'aller chercher le joueur ou l'arme
 
   // random enemy
-  const enemies = data.characters;
-  const randomIndex = Math.floor(Math.random() * enemies.length);
-  const enemy = enemies[randomIndex];
+  const enemies = data.characters
+  const randomIndex = Math.floor(Math.random() * enemies.length)
+  const enemy = enemies[randomIndex]
 
   randomEnemy.value = {
     id: enemy.id,
@@ -45,7 +47,7 @@ onMounted(() => {
     credit: enemy.credit,
     weapon: enemy.weapon,
     vitality: enemy.vitality,
-  };
+  }
 
   player.value = {
     id: 999, // générer uuid
@@ -54,12 +56,12 @@ onMounted(() => {
     credit: 0,
     weapon: weaponObj,
     vitality: 100,
-  };
-});
+  }
+})
 
 function attackEnemy() {
-  if (!randomEnemy.value || !player.value) return;
-  if (randomEnemy.value.vitality <= 0) return; // déjà mort
+  if (!randomEnemy.value || !player.value) return
+  if (randomEnemy.value.vitality <= 0) return // déjà mort
 
   const result = combatRound(
     {
@@ -76,20 +78,33 @@ function attackEnemy() {
       health: randomEnemy.value.vitality,
       credits: randomEnemy.value.credit,
     }
-  );
+  )
 
   // Mettre à jour les stats
-  player.value.vitality = result.playerHealth;
-  randomEnemy.value.vitality = result.enemyHealth;
+  player.value.vitality = result.playerHealth
+  randomEnemy.value.vitality = result.enemyHealth
 
   if (!result.enemyAlive) {
-    player.value.credit += result.creditsWon;
-    //  missionTerminee.value = true; // 🎯 récit #11
+    player.value.credit += result.creditsWon
+    //  missionTerminee.value = true; //  récit #11
   }
 
   if (!result.playerAlive) {
-    alert("Tu es mort !");
-    //   gameOver.value = true; // ☠️ récit #13
+    alert("Tu es mort !")
+    //   gameOver.value = true; //  récit #13
+  }
+}
+
+function healPlayer() {
+  //coute 5 CG
+
+  if (player.value) {
+    if (player.value?.credit - 5 >= 0) {
+      player.value.credit -= 5
+      player.value.vitality += HEALING_AMOUNT
+    } else {
+      //TODO, AFFICHER UN MESSAGE QU'ON N'A PAS PU HEAL LE JOUEUR
+    }
   }
 }
 </script>
@@ -105,6 +120,10 @@ function attackEnemy() {
                 Attaquer
               </button>
               <button class="btn btn-secondary">Fuir</button>
+
+              <button class="btn btn-primary me-2" @click="healPlayer">
+                Se Soigner
+              </button>
             </div>
           </div>
         </div>
