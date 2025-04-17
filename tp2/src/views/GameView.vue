@@ -15,6 +15,7 @@ const totalMissions = 5
 const credits = ref(100)
 
 const HEALING_AMOUNT = 5
+const healErrorMessage = ref("")
 
 import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
 import GameStats from "@/components/GameStats.vue"
@@ -102,8 +103,11 @@ function healPlayer() {
     if (player.value?.credit - 5 >= 0) {
       player.value.credit -= 5
       player.value.vitality += HEALING_AMOUNT
+      healErrorMessage.value = ""
     } else {
       //TODO, AFFICHER UN MESSAGE QU'ON N'A PAS PU HEAL LE JOUEUR
+      healErrorMessage.value =
+        "Pas assez de crédits galactiques pour se soigner."
     }
   }
 }
@@ -119,11 +123,14 @@ function healPlayer() {
               <button class="btn btn-primary me-2" @click="attackEnemy">
                 Attaquer
               </button>
-              <button class="btn btn-secondary">Fuir</button>
+              <button class="btn btn-secondary me-2">Fuir</button>
 
-              <button class="btn btn-primary me-2" @click="healPlayer">
-                Se Soigner
+              <button class="btn btn-success me-2" @click="healPlayer">
+                Se Soigner (+{{ HEALING_AMOUNT }}%) pour 5 CG
               </button>
+              <p v-if="healErrorMessage" class="text-danger mt-2">
+                {{ healErrorMessage }}
+              </p>
             </div>
           </div>
         </div>
