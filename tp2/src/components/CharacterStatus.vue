@@ -1,25 +1,22 @@
 <script setup lang="ts">
 const props = defineProps<{
   name: string
-  experience: "Débutant" | "Intermédiaire" | "Expert" | "Maître"
+  experience: string
   credits: number
-  shipName: string
+  weapon: string
   health: number
 }>()
 </script>
 
 <template>
-  <div class="character-status card">
-    <h2>Caractéristiques Personnage</h2>
-
-    <ul>
-      <li><strong>Nom :</strong> {{ props.name }}</li>
-      <li><strong>Expérience :</strong> {{ props.experience }}</li>
-      <li><strong>Crédits Galactiques :</strong> {{ props.credits }}</li>
-      <li><strong>Vaisseau :</strong> {{ props.shipName }}</li>
-      <li><strong>Vie :</strong> {{ props.health }}%</li>
-    </ul>
-  </div>
+  <h2>Caractéristiques Personnage</h2>
+  <ul>
+    <li><strong>Nom :</strong> {{ props.name }}</li>
+    <li><strong>Expérience :</strong> {{ props.experience }}</li>
+    <li><strong>Crédits Galactiques :</strong> {{ props.credits }}</li>
+    <li><strong>Vaisseau :</strong> {{ props.weapon }}</li>
+    <li><strong>Vie :</strong> {{ props.health }}%</li>
+  </ul>
 </template>
 
 <style scoped>
