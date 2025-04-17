@@ -11,7 +11,12 @@ const showCharacterStats = ref(false)
 const randomEnemy = ref<Character | null>(null)
 const player = ref<Character | null>(null)
 
+const missionCourante = ref(1)
+const totalMissions = 5
+const credits = ref(100)
+
 import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
+import GameStats from "@/components/GameStats.vue"
 onMounted(() => {
   const route = useRoute()
   const playerName = route.query.name as string
@@ -88,7 +93,6 @@ const revealEnemyStats = () => {
       <div class="col-6 mb-3">
         <div class="card">
           <div class="card-body">
-            <MissionStatus />
             <div>
               <button class="btn btn-primary me-2" @click="attackEnemy">
                 Attaquer
@@ -118,7 +122,11 @@ const revealEnemyStats = () => {
       </div>
       <div class="col-6">
         <div class="card">
-          <div class="card-body">Barre de vie viens ici</div>
+          <GameStats
+            :missionCourante="missionCourante"
+            :totalMissions="totalMissions"
+            :credits="credits"
+          />
         </div>
       </div>
       <div class="col-6">
