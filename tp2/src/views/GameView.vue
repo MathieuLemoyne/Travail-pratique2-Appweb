@@ -12,7 +12,6 @@ const player = ref<Character | null>(null);
 
 const missionCourante = ref(1);
 const totalMissions = 5;
-const credits = ref(100);
 
 import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
 import GameStats from "@/components/GameStats.vue";
@@ -51,7 +50,7 @@ onMounted(() => {
     id: 999, // générer uuid
     name: playerName,
     experience: 1, // débutant
-    credit: 0,
+    credit: 100,
     weapon: weaponObj,
     vitality: 100,
   };
@@ -132,7 +131,7 @@ function attackEnemy() {
           <GameStats
             :missionCourante="missionCourante"
             :totalMissions="totalMissions"
-            :credits="credits"
+            :credits="player?.credit"
           />
         </div>
       </div>
