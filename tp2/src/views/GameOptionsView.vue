@@ -1,58 +1,43 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import type { Weapon } from "@/scripts/types";
-import data from "../../backend/db.default.json";
-import "bootstrap/dist/css/bootstrap.min.css";
+<script setup lang="ts">
+import { ref, onMounted } from "vue"
+import { useRouter } from "vue-router"
+import type { Weapon } from "@/scripts/types"
+import data from "../../backend/db.default.json"
+import "bootstrap/dist/css/bootstrap.min.css"
 
-export default defineComponent({
-  setup() {
-    const router = useRouter();
+const router = useRouter()
 
-    const enteredCharacterName = ref<string>("");
-    const selectedWeapon = ref<string>("");
+const enteredCharacterName = ref<string>("")
+const selectedWeapon = ref<string>("")
 
-    const weapons = ref<Weapon[]>([]);
+const weapons = ref<Weapon[]>([])
 
-    onMounted(() => {
-      weapons.value = data.weapons;
-    });
+onMounted(() => {
+  weapons.value = data.weapons
+})
 
-    const startGame = () => {
-      if (enteredCharacterName.value && selectedWeapon.value) {
-        const weaponObj = weapons.value.find(
-          (w) => w.name === selectedWeapon.value
-        );
+const startGame = () => {
+  if (enteredCharacterName.value && selectedWeapon.value) {
+    const weaponObj = weapons.value.find((w) => w.name === selectedWeapon.value)
 
-        if (!weaponObj) {
-          alert("Arme non valide !");
-          return;
-        }
+    if (!weaponObj) {
+      alert("Arme non valide !")
+      return
+    }
 
-        const player = {
-          name: enteredCharacterName.value,
-          weapon: weaponObj,
-          health: 100,
-          experience: "Débutant",
-          credits: 0,
-        };
-
-        router.push({ name: "Game", state: { player } });
-      } else {
-        alert("Entre un nom et choisis une arme pour commencer !");
-      }
-    };
-
-    return {
-      enteredCharacterName,
-      selectedWeapon,
-      weapons,
-      startGame,
-    };
-  },
-});
+    // ⚠️ On passe que les valeurs primitives (name + weaponName) dans les params
+    router.push({
+      name: "Game",
+      query: {
+        name: enteredCharacterName.value,
+        weapon: selectedWeapon.value,
+      },
+    })
+  } else {
+    alert("Entre un nom et choisis une arme pour commencer !")
+  }
+}
 </script>
-
 <template>
   <div
     class="container py-5 d-flex justify-content-center align-items-center min-vh-100 bg-dark text-white"

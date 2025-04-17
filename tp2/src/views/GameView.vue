@@ -1,48 +1,85 @@
 <script setup lang="ts">
-import MissionStatus from "@/components/MissionStatus.vue";
-import EnemyStats from "@/components/EnemyStats.vue";
-import { ref, onMounted } from "vue";
-import data from "@/../backend/db.default.json";
-import bootstrap from "bootstrap";
-import CharacterStatus from "@/components/CharacterStatus.vue";
-import type { Player } from "@/scripts/types";
-import { useRoute } from "vue-router";
+import MissionStatus from "@/components/MissionStatus.vue"
+import EnemyStats from "@/components/EnemyStats.vue"
+import { ref, onMounted } from "vue"
+import data from "@/../backend/db.default.json"
+import "bootstrap/dist/css/bootstrap.min.css"
+import CharacterStatus from "@/components/CharacterStatus.vue"
+import { useRoute } from "vue-router"
+import type { Character } from "@/scripts/types"
+const showCharacterStats = ref(false)
+const randomEnemy = ref<Character | null>(null)
+const player = ref<Character | null>(null)
 
-const showCharacterStats = ref(false);
-const randomEnemy = ref();
-const player = ref<Player | null>(null);
-
-import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
+import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
 onMounted(() => {
-  const route = useRoute();
-  player.value = route.state?.player || null;
+  const route = useRoute()
+  const playerName = route.query.name as string
+  const weaponName = route.query.weapon as string
+
+  const weaponObj = data.weapons.find((w) => w.name === weaponName)
+
+  if (!weaponObj) {
+    console.error("Arme non trouvée :", weaponName)
+    return
+  }
+  if (!playerName || !weaponName) {
+    console.error("Nom ou arme manquante.")
+    return
+  }
+  //faire erreur quand impossible d'aller chercher le joueur ou l'arme
 
   // random enemy
-  const enemies = data.characters;
-  const randomIndex = Math.floor(Math.random() * enemies.length);
-  const enemy = enemies[randomIndex];
+  const enemies = data.characters
+  const randomIndex = Math.floor(Math.random() * enemies.length)
+  const enemy = enemies[randomIndex]
 
   randomEnemy.value = {
+    id: enemy.id,
     name: enemy.name,
-    experience:
-      ["Débutant", "Intermédiaire", "Expert", "Maître"][enemy.experience - 1] ??
-      "Débutant",
-    credits: enemy.credit,
-    shipName: enemy.weapon.name,
-    health: enemy.vitality,
-  };
-});
+    experience: enemy.experience,
+    credit: enemy.credit,
+    weapon: enemy.weapon,
+    vitality: enemy.vitality,
+  }
+
+  player.value = {
+    id: 999, // générer uuid
+    name: playerName,
+    experience: 1, // débutant
+    credit: 0,
+    weapon: weaponObj,
+    vitality: 100,
+  }
+})
 
 function attackEnemy() {
-  if (!randomEnemy.value) return;
-  const result = combatRound(player.value, randomEnemy.value);
-  player.value.health = result.playerHealth;
-  randomEnemy.value.health = result.enemyHealth;
+  if (!randomEnemy.value || !player.value) return
+
+  const result = combatRound(
+    {
+      experience: ["Débutant", "Intermédiaire", "Expert", "Maître"][
+        player.value.experience - 1
+      ],
+      health: player.value.vitality,
+      credits: player.value.credit,
+    },
+    {
+      experience: ["Débutant", "Intermédiaire", "Expert", "Maître"][
+        randomEnemy.value.experience - 1
+      ],
+      health: randomEnemy.value.vitality,
+      credits: randomEnemy.value.credit,
+    }
+  )
+
+  player.value.vitality = result.playerHealth
+  randomEnemy.value.vitality = result.enemyHealth
 }
 
 const revealEnemyStats = () => {
-  showCharacterStats.value = !showCharacterStats.value;
-};
+  showCharacterStats.value = !showCharacterStats.value
+}
 </script>
 
 <template>
@@ -67,10 +104,14 @@ const revealEnemyStats = () => {
             <EnemyStats
               v-if="randomEnemy"
               :name="randomEnemy.name"
-              :experience="randomEnemy.experience"
-              :credits="randomEnemy.credits"
-              :shipName="randomEnemy.shipName"
-              :health="randomEnemy.health"
+              :experience="
+                ['Débutant', 'Intermédiaire', 'Expert', 'Maître'][
+                  randomEnemy.experience - 1
+                ]
+              "
+              :credits="randomEnemy.credit"
+              :weapon="randomEnemy.weapon.name"
+              :health="randomEnemy.vitality"
             />
           </div>
         </div>
@@ -83,7 +124,18 @@ const revealEnemyStats = () => {
       <div class="col-6">
         <div class="card">
           <div class="card-body">
-            <CharacterStatus />
+            <CharacterStatus
+              v-if="player"
+              :name="player.name"
+              :experience="
+                ['Débutant', 'Intermédiaire', 'Expert', 'Maître'][
+                  player.experience - 1
+                ]
+              "
+              :credits="player.credit"
+              :weapon="player.weapon.name"
+              :health="player.vitality"
+            />
           </div>
         </div>
       </div>
