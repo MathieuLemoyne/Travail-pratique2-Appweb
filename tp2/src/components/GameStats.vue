@@ -14,7 +14,6 @@ defineProps<{
       <br />
       Argent : {{ credits }}
     </div>
-    />
   </div>
 </template>
 <style></style>
