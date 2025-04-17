@@ -11,6 +11,9 @@ import { useRoute } from "vue-router";
 const showCharacterStats = ref(false);
 const randomEnemy = ref();
 const player = ref<Player | null>(null);
+const missionCourante = ref(1);
+const totalMissions = 5;
+const credits = ref(100);
 
 import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
 import GameStats from "@/components/GameStats.vue";
@@ -77,7 +80,11 @@ const revealEnemyStats = () => {
       </div>
       <div class="col-6">
         <div class="card">
-          <GameStats />
+          <GameStats
+            :missionCourante="missionCourante"
+            :totalMissions="totalMissions"
+            :credits="credits"
+          />
         </div>
       </div>
       <div class="col-6">
