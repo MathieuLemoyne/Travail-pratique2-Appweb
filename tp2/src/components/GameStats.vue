@@ -2,7 +2,7 @@
 defineProps<{
   missionCourante: number;
   totalMissions: number;
-  credits: number;
+  credits?: number;
 }>();
 </script>
 

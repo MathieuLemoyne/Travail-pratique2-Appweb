@@ -12,34 +12,33 @@ const player = ref<Character | null>(null)
 
 const missionCourante = ref(1)
 const totalMissions = 5
-const credits = ref(100)
 
 const HEALING_AMOUNT = 5
 const healErrorMessage = ref("")
 
 import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
 import GameStats from "@/components/GameStats.vue"
-onMounted(() => {
-  const route = useRoute()
-  const playerName = route.query.name as string
-  const weaponName = route.query.weapon as string
 
-  const weaponObj = data.weapons.find((w) => w.name === weaponName)
+onMounted(() => {
+  const route = useRoute();
+  const playerName = route.query.name as string;
+  const weaponName = route.query.weapon as string;
+
+  const weaponObj = data.weapons.find((w) => w.name === weaponName);
 
   if (!weaponObj) {
-    console.error("Arme non trouvée :", weaponName)
-    return
+    console.error("Arme non trouvée :", weaponName);
+    return;
   }
   if (!playerName || !weaponName) {
-    console.error("Nom ou arme manquante.")
-    return
+    console.error("Nom ou arme manquante.");
+    return;
   }
   //faire erreur quand impossible d'aller chercher le joueur ou l'arme
 
   // random enemy
-  const enemies = data.characters
-  const randomIndex = Math.floor(Math.random() * enemies.length)
-  const enemy = enemies[randomIndex]
+
+  const enemy = getRandomEnemy();
 
   randomEnemy.value = {
     id: enemy.id,
@@ -48,21 +47,25 @@ onMounted(() => {
     credit: enemy.credit,
     weapon: enemy.weapon,
     vitality: enemy.vitality,
-  }
+  };
 
   player.value = {
     id: 999, // générer uuid
     name: playerName,
     experience: 1, // débutant
-    credit: 0,
+    credit: 100,
     weapon: weaponObj,
     vitality: 100,
-  }
-})
-
+  };
+});
+function getRandomEnemy() {
+  const enemies = data.characters;
+  const randomIndex = Math.floor(Math.random() * enemies.length);
+  return enemies[randomIndex];
+}
 function attackEnemy() {
-  if (!randomEnemy.value || !player.value) return
-  if (randomEnemy.value.vitality <= 0) return // déjà mort
+  if (!randomEnemy.value || !player.value) return;
+  if (randomEnemy.value.vitality <= 0) return; // déjà mort
 
   const result = combatRound(
     {
@@ -79,19 +82,21 @@ function attackEnemy() {
       health: randomEnemy.value.vitality,
       credits: randomEnemy.value.credit,
     }
-  )
+  );
 
   // Mettre à jour les stats
-  player.value.vitality = result.playerHealth
-  randomEnemy.value.vitality = result.enemyHealth
+  player.value.vitality = result.playerHealth;
+  randomEnemy.value.vitality = result.enemyHealth;
 
   if (!result.enemyAlive) {
-    player.value.credit += result.creditsWon
+    player.value.credit += result.creditsWon;
+    missionCourante.value++;
+    randomEnemy.value = getRandomEnemy();
     //  missionTerminee.value = true; //  récit #11
   }
 
   if (!result.playerAlive) {
-    alert("Tu es mort !")
+    alert("Tu es mort !");
     //   gameOver.value = true; //  récit #13
   }
 }
@@ -104,6 +109,7 @@ function healPlayer() {
       player.value.credit -= 5
       player.value.vitality += HEALING_AMOUNT
       healErrorMessage.value = ""
+
     } else {
       //TODO, AFFICHER UN MESSAGE QU'ON N'A PAS PU HEAL LE JOUEUR
       healErrorMessage.value =
@@ -158,7 +164,7 @@ function healPlayer() {
           <GameStats
             :missionCourante="missionCourante"
             :totalMissions="totalMissions"
-            :credits="credits"
+            :credits="player?.credit"
           />
         </div>
       </div>
