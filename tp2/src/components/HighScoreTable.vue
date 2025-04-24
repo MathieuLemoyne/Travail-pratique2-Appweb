@@ -29,7 +29,17 @@ const sortedPlayers = computed(() => {
     </div>
   </div>
 </template>
+
 <style scoped>
+.winning-players {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 .card {
   padding: 1rem;
   border-radius: 8px;

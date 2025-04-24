@@ -1,28 +1,31 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
-import { useRouter } from "vue-router"
-import type { Weapon } from "@/scripts/types"
-import data from "../../backend/db.default.json"
-import "bootstrap/dist/css/bootstrap.min.css"
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import type { Weapon } from "@/scripts/types";
+import data from "../../backend/db.default.json";
+import "bootstrap/dist/css/bootstrap.min.css";
+import NavBar from "@/components/NavBar.vue";
 
-const router = useRouter()
+const router = useRouter();
 
-const enteredCharacterName = ref<string>("")
-const selectedWeapon = ref<string>("")
+const enteredCharacterName = ref<string>("");
+const selectedWeapon = ref<string>("");
 
-const weapons = ref<Weapon[]>([])
+const weapons = ref<Weapon[]>([]);
 
 onMounted(() => {
-  weapons.value = data.weapons
-})
+  weapons.value = data.weapons;
+});
 
 const startGame = () => {
   if (enteredCharacterName.value && selectedWeapon.value) {
-    const weaponObj = weapons.value.find((w) => w.name === selectedWeapon.value)
+    const weaponObj = weapons.value.find(
+      (w) => w.name === selectedWeapon.value
+    );
 
     if (!weaponObj) {
-      alert("Arme non valide !")
-      return
+      alert("Arme non valide !");
+      return;
     }
 
     router.push({
@@ -31,13 +34,15 @@ const startGame = () => {
         name: enteredCharacterName.value,
         weapon: selectedWeapon.value,
       },
-    })
+    });
   } else {
-    alert("Entre un nom et choisis une arme pour commencer !")
+    alert("Entre un nom et choisis une arme pour commencer !");
   }
-}
+};
 </script>
 <template>
+  <NavBar />
+
   <div
     class="container py-5 d-flex justify-content-center align-items-center min-vh-100 bg-dark text-white"
   >
