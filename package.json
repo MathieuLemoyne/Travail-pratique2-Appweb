@@ -1,0 +1,25 @@
+{
+  "name": "travail-pratique2-appweb",
+  "version": "1.0.0",
+  "description": "travail pratique 2 dans le cours d'applicaiton web de jimmy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MathieuLemoyne/Travail-pratique2-Appweb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MathieuLemoyne/Travail-pratique2-Appweb/issues"
+  },
+  "homepage": "https://github.com/MathieuLemoyne/Travail-pratique2-Appweb#readme",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vue/test-utils": "^2.4.6",
+    "vitest": "^3.1.2"
+  }
+}
