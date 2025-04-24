@@ -25,7 +25,6 @@ const startGame = () => {
       return
     }
 
-    // ⚠️ On passe que les valeurs primitives (name + weaponName) dans les params
     router.push({
       name: "Game",
       query: {
