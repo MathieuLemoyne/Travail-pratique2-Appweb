@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import EnemyStats from "@/components/EnemyStats.vue";
-import { ref, onMounted } from "vue";
-import data from "@/../backend/db.default.json";
-import "bootstrap/dist/css/bootstrap.min.css";
-import CharacterStatus from "@/components/CharacterStatus.vue";
-import { useRoute } from "vue-router";
-import type { Character } from "@/scripts/types";
-import { useRouter } from "vue-router";
-import NavBar from "@/components/NavBar.vue";
+import EnemyStats from "@/components/EnemyStats.vue"
+import { ref, onMounted } from "vue"
+import data from "@/../backend/db.default.json"
+import "bootstrap/dist/css/bootstrap.min.css"
+import CharacterStatus from "@/components/CharacterStatus.vue"
+import { useRoute } from "vue-router"
+import type { Character } from "@/scripts/types"
+import { useRouter } from "vue-router"
+import NavBar from "@/components/NavBar.vue"
 
-const router = useRouter();
-const showCharacterStats = ref(false);
-const randomEnemy = ref<Character | null>(null);
-const player = ref<Character | null>(null);
-const gameOverWin = ref(false);
-const gameOverDead = ref(false);
+const router = useRouter()
+const showCharacterStats = ref(false)
+const randomEnemy = ref<Character | null>(null)
+const player = ref<Character | null>(null)
+const gameOverWin = ref(false)
+const gameOverDead = ref(false)
 
-const missionCourante = ref(1);
-const totalMissions = 5;
+const missionCourante = ref(1)
+const totalMissions = 5
 
-const HEALING_AMOUNT = 5;
-const healErrorMessage = ref("");
+const HEALING_AMOUNT = 5
+const healErrorMessage = ref("")
 
-import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
-import GameStats from "@/components/GameStats.vue";
+import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
+import GameStats from "@/components/GameStats.vue"
 
 onMounted(() => {
   const route = useRoute()
@@ -77,14 +77,13 @@ function getRandomEnemy() {
 }
 
 function attackEnemy() {
-
-  if (!randomEnemy.value || !player.value) return;
+  if (!randomEnemy.value || !player.value) return
   if (
     randomEnemy.value.vitality <= 0 ||
     gameOverWin.value ||
     gameOverDead.value
   )
-    return;
+    return
 
   const result = combatRound(
     {
@@ -103,31 +102,26 @@ function attackEnemy() {
     }
   )
 
+  player.value.vitality = result.playerHealth
+  randomEnemy.value.vitality = result.enemyHealth
 
-  player.value.vitality = result.playerHealth;
-  randomEnemy.value.vitality = result.enemyHealth;
-
-  console.log(`Mission actuelle : ${missionCourante.value}`);
-  console.log(`Mission totale : ${totalMissions}`);
+  console.log(`Mission actuelle : ${missionCourante.value}`)
+  console.log(`Mission totale : ${totalMissions}`)
 
   if (!result.enemyAlive) {
-
-
-    player.value.credit += result.creditsWon;
-    missionCourante.value++;
-
+    player.value.credit += result.creditsWon
+    missionCourante.value++
 
     if (missionCourante.value > totalMissions) {
-      alert("Vous avez gagné !");
-      pushHighscore();
+      alert("Vous avez gagné !")
+      pushHighscore()
     } else {
-      randomEnemy.value = getRandomEnemy();
+      randomEnemy.value = getRandomEnemy()
     }
   }
   if (!result.playerAlive) {
-
-    alert("Vous avez perdu !");
-    pushHighscore();
+    alert("Vous avez perdu !")
+    pushHighscore()
   }
 }
 function pushHighscore() {
@@ -138,22 +132,24 @@ function pushHighscore() {
         name: player.value.name,
         credits: player.value.credit.toString(),
       },
-    });
-
+    })
   }
 }
 function healPlayer() {
   //coute 5 CG
   if (player.value) {
+    if (player.value.vitality >= 100) {
+      healErrorMessage.value = "Déjà à 100% de vie !"
+      return
+    }
     if (player.value?.credit - 5 >= 0) {
-
-      player.value.credit -= 5;
-      player.value.vitality += HEALING_AMOUNT;
-      healErrorMessage.value = "";
+      player.value.credit -= 5
+      player.value.vitality += HEALING_AMOUNT
+      healErrorMessage.value = ""
     } else {
       //TODO, AFFICHER UN MESSAGE QU'ON N'A PAS PU HEAL LE JOUEUR
       healErrorMessage.value =
-        "Pas assez de crédits galactiques pour se soigner.";
+        "Pas assez de crédits galactiques pour se soigner."
     }
   }
 }
