@@ -24,7 +24,7 @@ const sortedPlayers = computed(() => {
     >
       <ul>
         <li><strong>Nom :</strong> {{ player.name }}</li>
-        <li><strong>Crédits Galactiques :</strong> {{ player.credits }}</li>
+        <li><strong>Credit:</strong> {{ player.credits }}</li>
       </ul>
     </div>
   </div>
@@ -33,11 +33,10 @@ const sortedPlayers = computed(() => {
 <style scoped>
 .winning-players {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1rem;
+  margin-top: 2rem;
 }
 
 .card {
