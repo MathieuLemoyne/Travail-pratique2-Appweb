@@ -1,23 +1,29 @@
 <script setup lang="ts">
-import EnemyStats from "@/components/EnemyStats.vue"
-import { ref, onMounted } from "vue"
-import data from "@/../backend/db.default.json"
-import "bootstrap/dist/css/bootstrap.min.css"
-import CharacterStatus from "@/components/CharacterStatus.vue"
-import { useRoute } from "vue-router"
-import type { Character } from "@/scripts/types"
-const showCharacterStats = ref(false)
-const randomEnemy = ref<Character | null>(null)
-const player = ref<Character | null>(null)
+import EnemyStats from "@/components/EnemyStats.vue";
+import { ref, onMounted } from "vue";
+import data from "@/../backend/db.default.json";
+import "bootstrap/dist/css/bootstrap.min.css";
+import CharacterStatus from "@/components/CharacterStatus.vue";
+import { useRoute } from "vue-router";
+import type { Character } from "@/scripts/types";
+import { useRouter } from "vue-router";
+import NavBar from "@/components/NavBar.vue";
 
-const missionCourante = ref(1)
-const totalMissions = 5
+const router = useRouter();
+const showCharacterStats = ref(false);
+const randomEnemy = ref<Character | null>(null);
+const player = ref<Character | null>(null);
+const gameOverWin = ref(false);
+const gameOverDead = ref(false);
 
-const HEALING_AMOUNT = 5
-const healErrorMessage = ref("")
+const missionCourante = ref(1);
+const totalMissions = 5;
 
-import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
-import GameStats from "@/components/GameStats.vue"
+const HEALING_AMOUNT = 5;
+const healErrorMessage = ref("");
+
+import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem";
+import GameStats from "@/components/GameStats.vue";
 
 onMounted(() => {
   const route = useRoute()
@@ -58,7 +64,7 @@ onMounted(() => {
   player.value = {
     id: 999, // générer uuid
     name: playerName,
-    experience: 1, // débutant
+    experience: 4, // débutant
     credit: 100,
     weapon: weaponObj,
     vitality: 100,
@@ -69,9 +75,16 @@ function getRandomEnemy() {
   const randomIndex = Math.floor(Math.random() * enemies.length)
   return enemies[randomIndex]
 }
+
 function attackEnemy() {
-  if (!randomEnemy.value || !player.value) return
-  if (randomEnemy.value.vitality <= 0) return // déjà mort
+
+  if (!randomEnemy.value || !player.value) return;
+  if (
+    randomEnemy.value.vitality <= 0 ||
+    gameOverWin.value ||
+    gameOverDead.value
+  )
+    return;
 
   const result = combatRound(
     {
@@ -90,35 +103,57 @@ function attackEnemy() {
     }
   )
 
-  // Mettre à jour les stats
-  player.value.vitality = result.playerHealth
-  randomEnemy.value.vitality = result.enemyHealth
+
+  player.value.vitality = result.playerHealth;
+  randomEnemy.value.vitality = result.enemyHealth;
+
+  console.log(`Mission actuelle : ${missionCourante.value}`);
+  console.log(`Mission totale : ${totalMissions}`);
 
   if (!result.enemyAlive) {
-    player.value.credit += result.creditsWon
-    missionCourante.value++
-    randomEnemy.value = getRandomEnemy()
-    //  missionTerminee.value = true; //  récit #11
-  }
 
+
+    player.value.credit += result.creditsWon;
+    missionCourante.value++;
+
+
+    if (missionCourante.value > totalMissions) {
+      alert("Vous avez gagné !");
+      pushHighscore();
+    } else {
+      randomEnemy.value = getRandomEnemy();
+    }
+  }
   if (!result.playerAlive) {
-    alert("Tu es mort !")
-    //   gameOver.value = true; //  récit #13
+
+    alert("Vous avez perdu !");
+    pushHighscore();
   }
 }
+function pushHighscore() {
+  if (player.value) {
+    router.push({
+      name: "Highscore",
+      query: {
+        name: player.value.name,
+        credits: player.value.credit.toString(),
+      },
+    });
 
+  }
+}
 function healPlayer() {
   //coute 5 CG
-
   if (player.value) {
     if (player.value?.credit - 5 >= 0) {
-      player.value.credit -= 5
-      player.value.vitality += HEALING_AMOUNT
-      healErrorMessage.value = ""
+
+      player.value.credit -= 5;
+      player.value.vitality += HEALING_AMOUNT;
+      healErrorMessage.value = "";
     } else {
       //TODO, AFFICHER UN MESSAGE QU'ON N'A PAS PU HEAL LE JOUEUR
       healErrorMessage.value =
-        "Pas assez de crédits galactiques pour se soigner."
+        "Pas assez de crédits galactiques pour se soigner.";
     }
   }
 }
@@ -126,6 +161,8 @@ defineExpose({ player }) //Chat gpt pour l'utiliser dans les tests
 </script>
 
 <template>
+  <NavBar />
+
   <div class="container mt-5">
     <div class="row">
       <div class="col-6 mb-3">
@@ -135,7 +172,12 @@ defineExpose({ player }) //Chat gpt pour l'utiliser dans les tests
               <button class="btn btn-primary me-2" @click="attackEnemy">
                 Attaquer
               </button>
-              <button class="btn btn-secondary me-2">Fuir</button>
+              <button
+                class="btn btn-secondary me-2"
+                @click="randomEnemy = getRandomEnemy()"
+              >
+                Fuir
+              </button>
 
               <button class="healBtn btn btn-success me-2" @click="healPlayer">
                 Se Soigner (+{{ HEALING_AMOUNT }}%) pour 5 CG
