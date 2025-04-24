@@ -1,42 +1,42 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted } from "vue"
+<script setup lang="ts">
+import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import type { Weapon } from "@/scripts/types"
 import data from "../../backend/db.default.json"
 import "bootstrap/dist/css/bootstrap.min.css"
 
-export default defineComponent({
-  setup() {
-    const router = useRouter()
+const router = useRouter()
 
-    const enteredCharacterName = ref<string>("")
-    const selectedWeapon = ref<string>("")
+const enteredCharacterName = ref<string>("")
+const selectedWeapon = ref<string>("")
 
-    const weapons = ref<Weapon[]>([])
+const weapons = ref<Weapon[]>([])
 
-    onMounted(() => {
-      weapons.value = data.weapons
-    })
-
-    const startGame = () => {
-      if (enteredCharacterName.value && selectedWeapon.value) {
-        // Tu pourrais stocker les infos ici dans un store ou localStorage si besoin
-        router.push({ name: "Game" })
-      } else {
-        alert("Entre un nom et choisis une arme pour commencer !")
-      }
-    }
-
-    return {
-      enteredCharacterName,
-      selectedWeapon,
-      weapons,
-      startGame,
-    }
-  },
+onMounted(() => {
+  weapons.value = data.weapons
 })
-</script>
 
+const startGame = () => {
+  if (enteredCharacterName.value && selectedWeapon.value) {
+    const weaponObj = weapons.value.find((w) => w.name === selectedWeapon.value)
+
+    if (!weaponObj) {
+      alert("Arme non valide !")
+      return
+    }
+
+    router.push({
+      name: "Game",
+      query: {
+        name: enteredCharacterName.value,
+        weapon: selectedWeapon.value,
+      },
+    })
+  } else {
+    alert("Entre un nom et choisis une arme pour commencer !")
+  }
+}
+</script>
 <template>
   <div
     class="container py-5 d-flex justify-content-center align-items-center min-vh-100 bg-dark text-white"
