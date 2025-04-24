@@ -7,6 +7,7 @@ import CharacterStatus from "@/components/CharacterStatus.vue";
 import { useRoute } from "vue-router";
 import type { Character } from "@/scripts/types";
 import { useRouter } from "vue-router";
+import NavBar from "@/components/NavBar.vue";
 
 const router = useRouter();
 const showCharacterStats = ref(false);
@@ -98,38 +99,36 @@ function attackEnemy() {
   player.value.vitality = result.playerHealth;
   randomEnemy.value.vitality = result.enemyHealth;
 
+  console.log(`Mission actuelle : ${missionCourante.value}`);
+  console.log(`Mission totale : ${totalMissions}`);
+
   if (!result.enemyAlive) {
     player.value.credit += result.creditsWon;
     missionCourante.value++;
 
     if (missionCourante.value > totalMissions) {
-      gameOverWin.value = true;
-      setTimeout(() => {
-        router.push({
-          name: "highscore",
-          query: {
-            name: player.value?.name,
-            credits: player.value?.credit.toString(),
-          },
-        });
-      }, 1500); // pause de 1.5 secondes avant de rediriger
+      alert("Vous avez gagné !");
+      pushHighscore();
     } else {
       randomEnemy.value = getRandomEnemy();
     }
   }
   if (!result.playerAlive) {
-    setTimeout(() => {
-      router.push({
-        name: "highscore",
-        query: {
-          name: player.value?.name,
-          credits: player.value?.credit.toString(),
-        },
-      });
-    }, 1500); // pause de 1.5 secondes avant de rediriger
+    alert("Vous avez perdu !");
+    pushHighscore();
   }
 }
-
+function pushHighscore() {
+  if (player.value) {
+    router.push({
+      name: "Highscore",
+      query: {
+        name: player.value.name,
+        credits: player.value.credit.toString(),
+      },
+    });
+  }
+}
 function healPlayer() {
   //coute 5 CG
   if (player.value) {
@@ -147,6 +146,8 @@ function healPlayer() {
 </script>
 
 <template>
+  <NavBar />
+
   <div class="container mt-5">
     <div class="row">
       <div class="col-6 mb-3">

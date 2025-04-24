@@ -1,20 +1,14 @@
-<script>
+<script setup lang="ts">
 import "bootstrap/dist/css/bootstrap.min.css";
-import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
-export default defineComponent({
-  setup() {
-    const router = useRouter();
+const router = useRouter();
 
-    const startGame = () => router.push({ name: "GameOptions" });
-    const showCredits = () => alert("Credits Page");
-    const highScore = () => router.push({ name: "Highscore" });
-    const exitGame = () => alert("Exiting...");
-
-    return { startGame, showCredits, exitGame };
-  },
-});
+// Définir les fonctions qui gèrent les actions des boutons
+const startGame = () => router.push({ name: "GameOptions" });
+const showCredits = () => alert("Credits Page");
+const highScore = () => router.push({ name: "Highscore" });
+const exitGame = () => alert("Exiting...");
 </script>
 
 <template>

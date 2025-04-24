@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import CharacterStatus from "@/components/CharacterStatus.vue";
-import TitleScreen from "../components/TitleScreen.vue";
+import NavBar from "../components/NavBar.vue";
 </script>
 
 <template>
   <main>
-    <TitleScreen />
+    <NavBar />
     <!--- <TheWelcome /> -->
   </main>
 </template>
