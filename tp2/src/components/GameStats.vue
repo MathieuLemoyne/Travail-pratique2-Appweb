@@ -2,7 +2,7 @@
 defineProps<{
   missionCourante: number;
   totalMissions: number;
-  credits?: number;
+  score?: number;
 }>();
 </script>
 
@@ -12,7 +12,7 @@ defineProps<{
     <div class="mission-en-cours">
       Mission en cours : {{ missionCourante }} / {{ totalMissions }}
       <br />
-      Argent : {{ credits }}
+      Score : {{ score }}
     </div>
   </div>
 </template>

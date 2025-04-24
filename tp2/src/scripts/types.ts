@@ -1,7 +1,7 @@
 export interface Character {
   id: number;
   name: string;
-  credit: number;
+  score: number;
   experience: number;
   weapon: Weapon;
   vitality: number;
