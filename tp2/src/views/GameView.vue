@@ -21,8 +21,14 @@ import GameStats from "@/components/GameStats.vue"
 
 onMounted(() => {
   const route = useRoute()
-  const playerName = route.query.name as string
-  const weaponName = route.query.weapon as string
+  const playerName = route.query?.name as string
+  const weaponName = route.query?.weapon as string
+
+  if (!playerName || !weaponName) {
+    console.error("Nom ou arme manquante.")
+
+    return
+  }
 
   const weaponObj = data.weapons.find((w) => w.name === weaponName)
 
@@ -116,6 +122,7 @@ function healPlayer() {
     }
   }
 }
+defineExpose({ player }) //Chat gpt pour l'utiliser dans les tests
 </script>
 
 <template>

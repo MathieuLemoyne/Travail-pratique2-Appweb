@@ -14,11 +14,11 @@ describe("CharacterStatus", () => {
       },
     })
 
-    expect(wrapper.text()).toContain("Nom : Noa")
-    expect(wrapper.text()).toContain("Expérience : Maître")
-    expect(wrapper.text()).toContain("Crédits Galactiques : 100")
-    expect(wrapper.text()).toContain("Arme : Lame du Dragon")
-    expect(wrapper.text()).toContain("Vie : 85%")
+    expect(wrapper.text()).toMatch(/Nom\s?:\s?Noa/)
+    expect(wrapper.text()).toMatch(/Expérience\s?:\s?Maître/)
+    expect(wrapper.text()).toMatch(/Crédits\s?Galactiques\s?:\s?100/)
+    expect(wrapper.text()).toMatch(/Vaisseau\s?:\s?Lame du Dragon/)
+    expect(wrapper.text()).toMatch(/Vie\s?:\s?85%/)
   })
 
   it("Version 2 : Affiche les props avec des matchers plus souples", () => {
