@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useRouter } from "vue-router";
+import "bootstrap/dist/css/bootstrap.min.css"
+import { useRouter } from "vue-router"
 
-const router = useRouter();
+const router = useRouter()
 
 // Définir les fonctions qui gèrent les actions des boutons
-const startGame = () => router.push({ name: "GameOptions" });
-const showCredits = () => alert("Credits Page");
-const highScore = () => router.push({ name: "Highscore" });
-const exitGame = () => alert("Exiting...");
+const startGame = () => router.push({ name: "GameOptions" })
+const showCredits = () => alert("Credits Page")
+const highScore = () => router.push({ name: "Highscore" })
+const exitGame = () => alert("Exiting...")
 </script>
 
 <template>
   <div class="container-fluid position-relative">
     <!-- Background image -->
     <img
-      src="../assets/background01.jpg"
+      src="../assets/background02.jpg"
       class="img-fluid position-absolute top-0 start-0 w-100"
       alt="background"
     />
