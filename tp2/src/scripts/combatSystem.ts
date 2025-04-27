@@ -3,7 +3,7 @@ export const hitChances: Record<string, number> = {
   Intermédiaire: 0.35,
   Expert: 0.5,
   Maître: 0.7,
-};
+}
 
 export function performAttack(experience: string): boolean {
   const hitChances: Record<string, number> = {
@@ -11,45 +11,50 @@ export function performAttack(experience: string): boolean {
     Intermédiaire: 0.35,
     Expert: 0.5,
     Maître: 0.7,
-  };
+  }
 
-  return Math.random() < (hitChances[experience] ?? 0.2);
+  return Math.random() < (hitChances[experience] ?? 0.2)
 }
 
 export function getRandomDamage(): number {
-  return Math.floor(Math.random() * (6 - 3 + 1)) + 3; // retourne un nombre aléatoire entre 3 et 6
+  return Math.floor(Math.random() * (6 - 3 + 1)) + 3 // retourne un nombre aléatoire entre 3 et 6
 }
 
 export function combatRound(
-  player: { experience: string; health: number; score: number },
+  player: {
+    experience: string
+    health: number
+    score: number
+    credits?: number
+  },
   enemy: { experience: string; health: number; score: number }
 ): {
-  playerAlive: boolean;
-  enemyAlive: boolean;
-  playerHealth: number;
-  enemyHealth: number;
-  scoreWon: number;
+  playerAlive: boolean
+  enemyAlive: boolean
+  playerHealth: number
+  enemyHealth: number
+  scoreWon: number
 } {
-  const playerHits = performAttack(player.experience);
-  const enemyHits = performAttack(enemy.experience);
+  const playerHits = performAttack(player.experience)
+  const enemyHits = performAttack(enemy.experience)
 
-  let scoreWon = 0;
+  let scoreWon = 0
 
   if (playerHits) {
-    const damage = getRandomDamage();
-    enemy.health -= damage;
+    const damage = getRandomDamage()
+    enemy.health -= damage
   }
 
   if (enemyHits) {
-    const damage = getRandomDamage();
-    player.health -= damage;
+    const damage = getRandomDamage()
+    player.health -= damage
   }
 
-  player.health = Math.max(0, player.health);
-  enemy.health = Math.max(0, enemy.health);
+  player.health = Math.max(0, player.health)
+  enemy.health = Math.max(0, enemy.health)
 
   if (enemy.health === 0) {
-    scoreWon = enemy.score;
+    scoreWon = enemy.score
   }
 
   return {
@@ -58,5 +63,5 @@ export function combatRound(
     playerHealth: player.health,
     enemyHealth: enemy.health,
     scoreWon: scoreWon,
-  };
+  }
 }
