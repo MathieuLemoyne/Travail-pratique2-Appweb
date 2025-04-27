@@ -21,7 +21,7 @@ const totalMissions = 5
 const HEALING_AMOUNT = 5
 const healErrorMessage = ref("")
 
-import { combatRound, getRandomDamagePercent } from "@/scripts/combatSystem"
+import { combatRound } from "@/scripts/combatSystem"
 import GameStats from "@/components/GameStats.vue"
 
 onMounted(() => {
@@ -63,7 +63,7 @@ onMounted(() => {
   player.value = {
     id: 999, // générer uuid
     name: playerName,
-    experience: 4, // débutant
+    experience: 4, // débutant,
     score: 100,
     weapon: weaponObj,
     vitality: 100,
@@ -138,9 +138,13 @@ function healPlayer() {
       healErrorMessage.value = "Déjà à 100% de vie !"
       return
     }
-    if (player.value?.credit - 5 >= 0) {
-      player.value.credit -= 5
-      player.value.vitality += HEALING_AMOUNT
+    if (player.value?.score - 5 >= 0) {
+      player.value.score -= 5
+      if (player.value.vitality + HEALING_AMOUNT > 100) {
+        player.value.vitality = 100
+      } else {
+        player.value.vitality += HEALING_AMOUNT
+      }
       healErrorMessage.value = ""
     } else {
       //TODO, AFFICHER UN MESSAGE QU'ON N'A PAS PU HEAL LE JOUEUR
