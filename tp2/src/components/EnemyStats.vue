@@ -1,11 +1,11 @@
 <script setup lang="ts">
 const props = defineProps<{
-  name: string
-  experience: string
-  credits: number
-  weapon: string
-  health: number
-}>()
+  name: string;
+  experience: string;
+  score: number;
+  weapon: string;
+  health: number;
+}>();
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const props = defineProps<{
   <ul>
     <li><strong>Nom :</strong> {{ props.name }}</li>
     <li><strong>Expérience :</strong> {{ props.experience }}</li>
-    <li><strong>Crédits Galactiques :</strong> {{ props.credits }}</li>
+    <li><strong>Score :</strong> {{ props.score }}</li>
     <li><strong>Arme :</strong> {{ props.weapon }}</li>
     <li><strong>Vie :</strong> {{ props.health }}%</li>
   </ul>

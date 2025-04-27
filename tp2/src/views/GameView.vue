@@ -10,7 +10,6 @@ import { useRouter } from "vue-router"
 import NavBar from "@/components/NavBar.vue"
 
 const router = useRouter()
-const showCharacterStats = ref(false)
 const randomEnemy = ref<Character | null>(null)
 const player = ref<Character | null>(null)
 const gameOverWin = ref(false)
@@ -56,7 +55,7 @@ onMounted(() => {
     id: enemy.id,
     name: enemy.name,
     experience: enemy.experience,
-    credit: enemy.credit,
+    score: enemy.score,
     weapon: enemy.weapon,
     vitality: enemy.vitality,
   }
@@ -65,7 +64,7 @@ onMounted(() => {
     id: 999, // générer uuid
     name: playerName,
     experience: 4, // débutant
-    credit: 100,
+    score: 100,
     weapon: weaponObj,
     vitality: 100,
   }
@@ -91,25 +90,22 @@ function attackEnemy() {
         player.value.experience - 1
       ],
       health: player.value.vitality,
-      credits: player.value.credit,
+      score: player.value.score,
     },
     {
       experience: ["Débutant", "Intermédiaire", "Expert", "Maître"][
         randomEnemy.value.experience - 1
       ],
       health: randomEnemy.value.vitality,
-      credits: randomEnemy.value.credit,
+      score: randomEnemy.value.score,
     }
   )
 
   player.value.vitality = result.playerHealth
   randomEnemy.value.vitality = result.enemyHealth
 
-  console.log(`Mission actuelle : ${missionCourante.value}`)
-  console.log(`Mission totale : ${totalMissions}`)
-
   if (!result.enemyAlive) {
-    player.value.credit += result.creditsWon
+    player.value.score += result.scoreWon
     missionCourante.value++
 
     if (missionCourante.value > totalMissions) {
@@ -130,7 +126,7 @@ function pushHighscore() {
       name: "Highscore",
       query: {
         name: player.value.name,
-        credits: player.value.credit.toString(),
+        score: player.value.score.toString(),
       },
     })
   }
@@ -196,7 +192,7 @@ defineExpose({ player }) //Chat gpt pour l'utiliser dans les tests
                   randomEnemy.experience - 1
                 ]
               "
-              :credits="randomEnemy.credit"
+              :score="randomEnemy.score"
               :weapon="randomEnemy.weapon.name"
               :health="randomEnemy.vitality"
             />
@@ -208,7 +204,7 @@ defineExpose({ player }) //Chat gpt pour l'utiliser dans les tests
           <GameStats
             :missionCourante="missionCourante"
             :totalMissions="totalMissions"
-            :credits="player?.credit"
+            :score="player?.score"
           />
         </div>
       </div>
@@ -223,7 +219,7 @@ defineExpose({ player }) //Chat gpt pour l'utiliser dans les tests
                   player.experience - 1
                 ]
               "
-              :credits="player.credit"
+              :score="player.score"
               :weapon="player.weapon.name"
               :health="player.vitality"
             />

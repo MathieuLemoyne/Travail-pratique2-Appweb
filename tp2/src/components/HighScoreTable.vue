@@ -4,12 +4,12 @@ import { computed } from "vue";
 const props = defineProps<{
   winningPlayers: Array<{
     name: string;
-    credits: number;
+    score: number;
   }>;
 }>();
 
 const sortedPlayers = computed(() => {
-  return props.winningPlayers.sort((a, b) => b.credits - a.credits);
+  return props.winningPlayers.sort((a, b) => b.score - a.score);
 });
 </script>
 
@@ -24,7 +24,7 @@ const sortedPlayers = computed(() => {
     >
       <ul>
         <li><strong>Nom :</strong> {{ player.name }}</li>
-        <li><strong>Credit:</strong> {{ player.credits }}</li>
+        <li><strong>Score:</strong> {{ player.score }}</li>
       </ul>
     </div>
   </div>

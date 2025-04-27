@@ -21,19 +21,19 @@ export function getRandomDamage(): number {
 }
 
 export function combatRound(
-  player: { experience: string; health: number; credits: number },
-  enemy: { experience: string; health: number; credits: number }
+  player: { experience: string; health: number; score: number },
+  enemy: { experience: string; health: number; score: number }
 ): {
   playerAlive: boolean;
   enemyAlive: boolean;
   playerHealth: number;
   enemyHealth: number;
-  creditsWon: number;
+  scoreWon: number;
 } {
   const playerHits = performAttack(player.experience);
   const enemyHits = performAttack(enemy.experience);
 
-  let creditsWon = 0;
+  let scoreWon = 0;
 
   if (playerHits) {
     const damage = getRandomDamage();
@@ -49,7 +49,7 @@ export function combatRound(
   enemy.health = Math.max(0, enemy.health);
 
   if (enemy.health === 0) {
-    creditsWon = enemy.credits;
+    scoreWon = enemy.score;
   }
 
   return {
@@ -57,6 +57,6 @@ export function combatRound(
     enemyAlive: enemy.health > 0,
     playerHealth: player.health,
     enemyHealth: enemy.health,
-    creditsWon,
+    scoreWon: scoreWon,
   };
 }
