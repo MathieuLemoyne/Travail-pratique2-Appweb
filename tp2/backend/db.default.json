@@ -30,7 +30,7 @@
     {
       "id": 8531,
       "name": "Lucian de Valombre",
-      "credit": 95,
+      "score": 95,
       "experience": 2,
       "weapon": { "id": 5380, "name": "Épée bâtarde du mercenaire" },
       "vitality": 77
@@ -38,7 +38,7 @@
     {
       "id": 1196,
       "name": "Cassian le Sage",
-      "credit": 100,
+      "score": 100,
       "experience": 4,
       "weapon": { "id": 7571, "name": "Bâton du mage ancien" },
       "vitality": 62
@@ -46,7 +46,7 @@
     {
       "id": 4357,
       "name": "Vlad le Ténébreux",
-      "credit": 100,
+      "score": 100,
       "experience": 2,
       "weapon": { "id": 1289, "name": "Claymore du nord" },
       "vitality": 84
@@ -54,7 +54,7 @@
     {
       "id": 6709,
       "name": "Dame Éliana",
-      "credit": 70,
+      "score": 70,
       "experience": 4,
       "weapon": { "id": 669, "name": "Arc court elfique" },
       "vitality": 34
@@ -62,7 +62,7 @@
     {
       "id": 5521,
       "name": "Arthas le Paladin",
-      "credit": 70,
+      "score": 70,
       "experience": 4,
       "weapon": { "id": 1124, "name": "Lance de chevalier" },
       "vitality": 32
@@ -70,7 +70,7 @@
     {
       "id": 3993,
       "name": "Grimgor le Sauvage",
-      "credit": 60,
+      "score": 60,
       "experience": 2,
       "weapon": { "id": 97, "name": "Hache de guerre naine" },
       "vitality": 42
@@ -78,7 +78,7 @@
     {
       "id": 2017,
       "name": "Hans le Roublard",
-      "credit": 95,
+      "score": 95,
       "experience": 1,
       "weapon": { "id": 9312, "name": "Épée de cristal" },
       "vitality": 86
@@ -86,7 +86,7 @@
     {
       "id": 4965,
       "name": "Roi Gob le Glouton",
-      "credit": 65,
+      "score": 65,
       "experience": 1,
       "weapon": { "id": 9030, "name": "Marteau de guerre du Titan" },
       "vitality": 57
@@ -94,7 +94,7 @@
     {
       "id": 7804,
       "name": "Arkhann l'Amiral",
-      "credit": 90,
+      "score": 90,
       "experience": 4,
       "weapon": { "id": 9752, "name": "Fléau d'armes lourd" },
       "vitality": 50
@@ -102,7 +102,7 @@
     {
       "id": 7386,
       "name": "Gorthak le Ravageur",
-      "credit": 130,
+      "score": 130,
       "experience": 4,
       "weapon": { "id": 5307, "name": "Faux des ténèbres" },
       "vitality": 94
