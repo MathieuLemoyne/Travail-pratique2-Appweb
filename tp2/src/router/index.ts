@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import GameOptionsView from "@/views/GameOptionsView.vue";
-import GameView from "@/views/GameView.vue";
+import { createRouter, createWebHistory } from "vue-router"
+import HomeView from "../views/HomeView.vue"
+import GameOptionsView from "@/views/GameOptionsView.vue"
+import GameView from "@/views/GameView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,11 +30,11 @@ const router = createRouter({
       component: GameView,
     },
     {
-      path: "/highscore/:name/:score",
+      path: "/highscore",
       name: "Highscore",
       component: () => import("@/views/HighscoreView.vue"),
     },
   ],
-});
+})
 
-export default router;
+export default router
