@@ -2,37 +2,48 @@
 import HighScoreTable from "@/components/HighScoreTable.vue";
 import NavBar from "@/components/NavBar.vue";
 import data from "../../backend/db.default.json";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import type { Ranking } from "@/scripts/types";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const ranking = ref<Ranking[]>([]);
-const playerName = ref("");
-const playerScore = ref("");
-
-onMounted(() => {
-  playerName.value = route.params.name as string;
-  playerScore.value = route.params.score as string;
-  ranking.value = data.ranking;
-});
+const ranking = ref<Ranking[]>(data.ranking);
+const playerName = ref((route.query.name as string) || "");
+const playerScore = ref((route.query.score as string) || "");
 
 const deleteScore = () => {
-  alert("Score deleted.");
+  playerName.value = "";
+  playerScore.value = "";
 };
 
 const approveScore = () => {
-  alert("Score added to leaderboard.");
+  ranking.value.push({
+    name: playerName.value,
+    score: parseInt(playerScore.value),
+    id: Date.now(),
+  });
+  ranking.value.sort((a, b) => b.score - a.score);
+  playerName.value = "";
+  playerScore.value = "";
 };
 
-console.log(playerName, playerScore);
+console.log(playerName.value, playerScore.value);
 </script>
 
 <template>
   <NavBar />
   <HighScoreTable :winningPlayers="ranking" />
 
-  <div v-if="playerName && playerScore">
+  <div
+    v-if="playerName && playerScore"
+    style="
+      background: yellow;
+      padding: 20px;
+      position: relative;
+      z-index: 1000;
+      margin-top: 60px;
+    "
+  >
     <h3>Player: {{ playerName }}</h3>
     <p>Score: {{ playerScore }}</p>
 
