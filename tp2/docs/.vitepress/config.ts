@@ -1,28 +1,9 @@
-import { defineConfig } from 'vitepress'
-
-// https://vitepress.dev/reference/site-config
-export default defineConfig({
-  title: "Travail Pratique 2",
-  description: "Jeu vidéo avec Vue",
+// docs/.vitepress/config.js
+export default {
+  base: "/Travail-pratique2-Appweb/",
+  title: "Documentation TP2 - Jeu",
+  description: "Documentation du projet de jeu développé avec Vue.js",
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
-    ],
-
-    sidebar: [
-      {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
-      }
-    ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
-  }
-})
+    nav: [{ text: "Accueil", link: "/" }],
+  },
+};

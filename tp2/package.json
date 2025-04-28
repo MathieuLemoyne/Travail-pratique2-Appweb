@@ -10,7 +10,10 @@
     "test": "vitest",
     "test:unit": "vitest",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "axios": "^1.8.4",
@@ -19,6 +22,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "vitepress": "1.0.0-rc.31",
     "@tsconfig/node22": "^22.0.0",
     "@types/bootstrap": "^5.2.10",
     "@types/jsdom": "^21.1.7",
