@@ -7,3 +7,7 @@ travail pratique 2 dans le cours d'applicaiton web de jimmy
 - recours à l'IA pour revoir certaines parties du code, principalement pour des suggestions d'optimisation ou de clarté.
 - Aucun bout de code n'a été directement généré par l'IA pour le développement du jeu.
 - Le travail principal (programmation, design du jeu, logique de gameplay) a été entièrement réalisé par nous-même.
+
+##
+lien de github 
+https://github.com/MathieuLemoyne/Travail-pratique2-Appweb/tree/main 
